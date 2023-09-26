@@ -4,6 +4,7 @@
   "description": "test implementation to see the city of origin of the selected employees in a list.",
   "main": "index.js",
   "scripts": {
+    "allure:clear": "rm -r allure-results/ allure-report/",
     "cy:run:test": "cypress run --spec cypress/e2e/*.js --reporter mocha-allure-reporter",
     "report:allure": "allure generate allure-results --clean -o allure-report && allure open  allure-report",
     "test:allure": "npm run cy:run:test && npm run report:allure"
