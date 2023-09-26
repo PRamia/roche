@@ -19,12 +19,12 @@ describe('Employee Selection and City Display', () => {
   });
 
   it("should allow checking and unchecking an employee's name", () => {
-
+    cy.checkEmployeeByName('Janet');
+    cy.get(employeesTable.checkboxTick).should('to.exist').should('have.class', 'jqx-checkbox-check-checked');
+    cy.checkEmployeeByName('Janet');
+    cy.get(employeesTable.checkboxTick).should('not.exist');
   });
 
-  it("should allow checking and unchecking an employee's name", () => {
-
-  });
   it("should display the city of origin for a selected employee", () => {
 
   });
