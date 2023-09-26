@@ -15,7 +15,7 @@ describe('Employee Selection and City Display', () => {
 
   it("should allow checking and unchecking an employee's name", () => {
     cy.checkEmployeeByName('Janet');
-    cy.get(employeesTable.checkboxTick).should('to.exist').should('have.class', 'jqx-checkbox-check-checked');
+    cy.get(employeesTable.checkboxTick).should('to.exist').and('have.class', 'jqx-checkbox-check-checked');
     cy.checkEmployeeByName('Janet');
     cy.get(employeesTable.checkboxTick).should('not.exist');
   });
@@ -36,9 +36,22 @@ describe('Employee Selection and City Display', () => {
     });
   });
 
-  it.only("should show the city of origin for all selected employees", () => {
-    cy.expandAllTableEmployees()
-    cy.checkAllEmployees()
+  it("should show the city of origin for all selected employees", () => {
+    cy.expandAllTableEmployees();
+    cy.checkAllEmployees();
+    cy.getButtonByText('View selected data').click();
+
+    // compare all list items with the employees from the fixture file 
+    cy.get(employeesTable.listItem).each(($el) => {
+      const employeeNameFromList = $el.text();
+      cy.get('@employeesData').then((employees) => {
+        const employeeExists = employees.some((employee) => {
+          const comparedEmployee = employee.FirstName + ' is from ' + employee.City
+          return comparedEmployee === employeeNameFromList
+        });
+        cy.wrap(employeeExists).should('be.true', `Employee ${employeeNameFromList} should exist in the JSON data.`);
+      });
+    });
   });
 
   it("should not display any results when no employees are selected", () => {
