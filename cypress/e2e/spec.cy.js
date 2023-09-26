@@ -5,7 +5,6 @@ describe('Employee Selection and City Display', () => {
   const employeesFixture = "employees.json";
 
   beforeEach(() => {
-    // Load the HTML page and provide aliases to the fixtures
     cy.visit("/employees.html", {
       onBeforeLoad(win) {
         win.employees = require(`../fixtures/${employeesFixture}`);
@@ -14,7 +13,9 @@ describe('Employee Selection and City Display', () => {
   });
 
   it("should not display any cities when no employees are selected", () => {
-
+    cy.get(employeesTable.checkboxTick).should('not.exist');
+    cy.getButtonByText('View selected data').click();
+    cy.get(employeesTable.listContentBox).children().should('have.length', 0);  
   });
 
   it("should allow checking and unchecking an employee's name", () => {
